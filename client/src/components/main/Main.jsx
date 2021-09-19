@@ -1,11 +1,15 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom'
 
 import { Button, TextField } from '@material-ui/core';
 
 import { socket } from '../../sockets/socket';
+
 import './main.scss';
 
 function Main() {
+  const history = useHistory();
+
   const [username, setUsername] = React.useState('');
   const [room_id, setRoom] = React.useState('');
   const [isValidInputs, toggleValidInputs] = React.useState(false);
@@ -14,7 +18,7 @@ function Main() {
     socket.on('connect', () => {
       console.log("Соединение с сервером успешно установлено")
     })
-  })
+  }, [])
 
   React.useEffect(() => {
     if(room_id.length && username.length) toggleValidInputs(true)
@@ -24,8 +28,10 @@ function Main() {
   const connectServer = () => {
     socket.emit('connect-room', {
       username: username,
-      id_room: room_id
+      id_room: +room_id
     })
+
+    history.push('/room')
   }
 
   return (

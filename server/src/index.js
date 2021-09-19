@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { initSocket } = require('./socket/init');
+const { initSocket } = require('./socket/socket');
 
 const PORT = process.env.PORT || 5500
 
