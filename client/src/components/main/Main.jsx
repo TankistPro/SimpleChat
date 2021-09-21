@@ -5,6 +5,8 @@ import { Button, TextField } from '@material-ui/core';
 
 import { socket } from '../../sockets/socket';
 
+import { reducer, initialState } from '../../reducer/reducer'
+
 import './main.scss';
 
 function Main() {
@@ -13,6 +15,8 @@ function Main() {
   const [username, setUsername] = React.useState('');
   const [room_id, setRoom] = React.useState('');
   const [isValidInputs, toggleValidInputs] = React.useState(false);
+
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   React.useEffect(() => {
     socket.on('connect', () => {
@@ -29,6 +33,14 @@ function Main() {
     socket.emit('connect-room', {
       username: username,
       id_room: +room_id
+    })
+
+    dispatch({
+      type: 'initUser',
+      payload: {
+        username: username,
+        id_room: +room_id
+      }
     })
 
     history.push('/room')

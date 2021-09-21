@@ -4,19 +4,34 @@ import { useHistory } from 'react-router-dom';
 import { Button, TextField } from '@material-ui/core';
 import { socket } from '../../sockets/socket';
 
+import { initialState, reducer } from '../../reducer/reducer'
+
 import './room.scss';
 
 function Room () {
     const history = useHistory();
-    let [userList, updateUserList] = React.useState([]);
     let [message, setMessage] = React.useState('');
+
+    const [state, dispatch] = React.useReducer(reducer, initialState);
 
     React.useEffect(() => {
         socket.on('connected-user', (users) => {
-            console.log(users)
-            updateUserList(userList = users);
+            dispatch({
+                type: 'initRoomUsers',
+                payload: users
+            })
         })
-      }, [])
+
+        socket.on('disconnected-user', (username) => {
+            console.log('Пользователь вышел из чата', username)
+            dispatch({
+                type: 'removeUser',
+                username
+            })
+        })
+
+        console.log(state.currentUser)
+    }, [])
 
     const sendMessage = () => {
         console.log(message);
@@ -25,7 +40,9 @@ function Room () {
     }
 
     const exit = () => {
-        socket.emit('disconnect-user')
+        socket.emit('disconnected', state.currentUser);
+        socket.disconnect()
+
         history.push('/')
     }
 
@@ -38,7 +55,7 @@ function Room () {
             <header>
                 <h1>Room</h1>
                 <div className="right-bar">
-                    <p>Участников: { userList.length }</p>
+                    <p>Участников: { state.userList.length }</p>
                     <Button 
                         variant="contained"
                         onClick={exit}

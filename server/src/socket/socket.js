@@ -26,6 +26,9 @@ module.exports.initSocket = (app) => {
       console.log(rooms);
     });
 
+    socket.on('disconnected', ({id_room, username}) => {
+      io.to(id_room).emit('disconnected-user', username);
+    })
   })
 
   io.listen(5505)
