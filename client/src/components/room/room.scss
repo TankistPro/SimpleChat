@@ -32,6 +32,14 @@ main {
     position: relative;
     height: calc(100vh - 90px);
 
+    .wrapper-block {
+        width: calc(100% - 10rem);
+        height: calc(100vh - 90px);
+        margin-right: 0;
+        margin-left: auto;
+        position: relative;
+    }
+
     .bottom {
         position: absolute;
         bottom: 0;
