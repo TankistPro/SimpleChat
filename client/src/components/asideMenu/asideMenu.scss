@@ -20,9 +20,14 @@ aside {
             &:not(:first-child) {
                 margin-top: 10px;
             }
+
             background-color: #fff;
             padding: 5px 2px;
             border-radius: 4px;
+
+            &.my-account {
+                background-color: rgba(99, 100, 100, 0.514);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 export let initialState = {
     userList: [],
-    currentUser: null
+    currentUser: null,
+    messageData: []
 }
 
 export function reducer(state, action) {
@@ -17,8 +18,18 @@ export function reducer(state, action) {
                     users = state.userList.splice(index, 1)
                 }
             });
-
             return { ...state, userList: users}
+        case 'exit':
+            return {
+                userList: [],
+                currentUser: null
+            }
+        case 'newMessage': {
+            state.messageData.push(action.payload)
+            return {
+                ...state, messageData: state.messageData
+            };
+        }
         default:
             return state.userList;
     }

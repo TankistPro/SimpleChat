@@ -27,8 +27,15 @@ module.exports.initSocket = (app) => {
     });
 
     socket.on('disconnected', ({id_room, username}) => {
+      socket.disconnect();
       io.to(id_room).emit('disconnected-user', username);
     });
+
+
+
+    socket.on('send-message', payload => {
+      io.to(payload.from.id_room).emit('new-message', payload);
+    })
   })
 
   io.listen(5505)

@@ -15,17 +15,35 @@ function Room () {
     let [message, setMessage] = React.useState('');
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
-    const sendMessage = () => {
-        console.log(message);
+    React.useEffect(() => {
+        socket.on('new-message', (message) => { 
+            console.log(message)
+            dispatch({
+                type: 'newMessage',
+                payload: message    
+            })
+            console.log(state)
+        })
+    }, [])
 
-        setMessage('')
+    const sendMessage = () => {
+        const messagePayload = {
+            from: state.currentUser,
+            text: message,
+            date: Date.now()
+        };
+
+        setMessage('');
+
+        socket.emit('send-message', messagePayload);
     }
 
     const exit = () => {
         socket.emit('disconnected', state.currentUser);
-        socket.disconnect()
-
-        history.push('/')
+        dispatch({
+            type:'exit'
+        });
+        history.push('/');
     }
 
     const sendHandler = (e) => {
@@ -48,6 +66,19 @@ function Room () {
             <main>
                 <AsideMenu />
                 <div className="wrapper-block">
+                    <div className="wrapper-block__chat">
+                        {state.messageData.map((message, index) => (
+                            <div key={index} className={
+                                `message-item ${state.currentUser.username ===
+                                    message.from.username ?
+                                    'your-message' : ''}`
+                                }
+                            >
+                                <p>{ message.text }</p>
+                                <small>{ new Date(message.date).toLocaleString() }</small>
+                            </div>
+                        ))}
+                    </div>
                     <div className="bottom">
                         <TextField 
                             value={message}

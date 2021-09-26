@@ -11,7 +11,6 @@ const AsideMenu = () => {
 
     React.useEffect(() => {
         socket.on('connected-user', (users) => {
-            console.log(state)
             dispatch({
                 type: 'initRoomUsers',
                 payload: users
@@ -34,7 +33,8 @@ const AsideMenu = () => {
             <h2>Участники { state.userList.length }</h2>
             <ul>
             {state.userList.map((user, index) =>
-                <li key={index}>
+                <li key={index} className={state.currentUser.username ===
+                user ? 'my-account' : ''}>
                  {index + 1}. {user}
                 </li>
             )}

@@ -33,11 +33,46 @@ main {
     height: calc(100vh - 90px);
 
     .wrapper-block {
-        width: calc(100% - 10rem);
+        width: calc(100% - 150px);
         height: calc(100vh - 90px);
         margin-right: 0;
         margin-left: auto;
         position: relative;
+        background-color:rgb(216, 240, 240);
+
+        &__chat {
+            padding-top: 10px;
+            padding-right: 10px;
+            padding-left: 10px;
+            height: calc(100vh - 155px);
+            overflow-y: scroll;
+            .message-item {
+                background-color: rgba(68, 116, 116, 0.753);
+                border-radius: 10px;
+                padding: 10px 15px 20px 15px;
+                font-size: 22px;
+                width: max-content;
+                margin: 15px 0;
+                position: relative;
+                min-width: 100px;
+                color: #fff;max-width: 500px;
+                
+                &.your-message {
+                    margin-right: 0;
+                    margin-left: auto;
+                    background-color: rgba(52, 115, 197, 0.87);
+                }
+
+                small {
+                    position: absolute;
+                    bottom: 2px;
+                    right: 7px;
+                    font-size: 12px;
+                    color: rgb(34, 34, 34);
+                    font-weight: 600;
+                }
+            }
+        }
     }
 
     .bottom {
