@@ -15,10 +15,10 @@ export function reducer(state, action) {
             state.userList.forEach((user, index) => {
                 if(user === action.username) {
                     console.log('пользователь найден')
-                    users = state.userList.splice(index, 1)
+                    state.userList.splice(index, 1)
                 }
             });
-            return { ...state, userList: users}
+            return { ...state, userList:  state.userList}
         case 'exit':
             return {
                 userList: [],

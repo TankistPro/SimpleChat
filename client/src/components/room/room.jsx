@@ -16,11 +16,11 @@ function Room () {
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
     React.useEffect(() => {
-        socket.on('new-message', (message) => { 
+        socket.on('new-message', (message) => {
             console.log(message)
             dispatch({
                 type: 'newMessage',
-                payload: message    
+                payload: message
             })
             console.log(state)
         })
@@ -55,7 +55,7 @@ function Room () {
             <header>
                 <h1>Room #{ state.currentUser.id_room }</h1>
                 <div className="right-bar">
-                    <Button 
+                    <Button
                         variant="contained"
                         onClick={exit}
                     >
@@ -80,16 +80,16 @@ function Room () {
                         ))}
                     </div>
                     <div className="bottom">
-                        <TextField 
+                        <TextField
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             onKeyDown={ sendHandler }
-                            className="input-chat" 
-                            id="filled-basic" 
-                            label="Введите сообщение..." 
-                            variant="filled" 
+                            className="input-chat"
+                            id="filled-basic"
+                            label="Введите сообщение..."
+                            variant="filled"
                         />
-                        <Button 
+                        <Button
                             variant="contained"
                             onClick={sendMessage}
                         >

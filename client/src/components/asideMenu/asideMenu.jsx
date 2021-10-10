@@ -24,8 +24,6 @@ const AsideMenu = () => {
                 username
             })
         })
-
-        console.log(state)
     }, [])
 
     return (

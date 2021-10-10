@@ -15,12 +15,36 @@ function Main() {
   const [username, setUsername] = React.useState('');
   const [room_id, setRoom] = React.useState('');
   const [isValidInputs, toggleValidInputs] = React.useState(false);
+  const [isUserExist, toggleUserExist] = React.useState(false);
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
   React.useEffect(() => {
     socket.on('connect', () => {
       console.log("Соединение с сервером успешно установлено")
+    })
+  }, [])
+
+  React.useEffect(() => {
+    socket.on('successful-connect', (user) => {
+      toggleUserExist(false)
+      dispatch({
+        type: 'initUser',
+        payload: {
+          username: user.username,
+          id_room: +user.room_id
+        }
+      })
+
+      history.push('/room')
+
+      console.log(user.username, +user.room_id)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    socket.on('exist-user', () => {
+      toggleUserExist(true)
     })
   }, [])
 
@@ -34,48 +58,40 @@ function Main() {
       username: username,
       id_room: +room_id
     })
-
-    dispatch({
-      type: 'initUser',
-      payload: {
-        username: username,
-        id_room: +room_id
-      }
-    })
-
-    history.push('/room')
   }
 
   return (
     <div className="main">
       <div className="main-block">
         <h1>ClientCHAT</h1>
-        <TextField 
-          className="main-block__input" 
-          value={ username } 
+        <TextField
+          className="main-block__input"
+          value={ username }
           onChange={e => setUsername(e.target.value)}
-          id="outlined-basic" 
-          label="Имя" 
+          id="outlined-basic"
+          label="Имя"
           autoComplete="off"
-          variant="outlined" 
+          variant="outlined"
         />
-        <TextField 
-          className="main-block__input" 
-          value={ room_id  } 
+        <TextField
+          className="main-block__input"
+          value={ room_id  }
           onChange={e => setRoom(e.target.value)}
-          id="outlined-basic" 
-          label="ID комнаты" 
+          id="outlined-basic"
+          label="ID комнаты"
           autoComplete="off"
-          variant="outlined" 
+          variant="outlined"
         />
-        <Button 
-          variant="contained" 
-          color="primary" 
+        <Button
+          variant="contained"
+          color="primary"
           onClick={ connectServer }
           disabled={ !isValidInputs }
         >Войти</Button>
+        { isUserExist &&
+        <p>Пользователь с таким именем уже есть в комнате!</p>
+        }
       </div>
-
       <small>&copy;TankistPro Production</small>
     </div>
   );
