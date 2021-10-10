@@ -26,19 +26,17 @@ function Main() {
   }, [])
 
   React.useEffect(() => {
-    socket.on('successful-connect', (user) => {
+    socket.on('successful-connect', (payload) => {
       toggleUserExist(false)
       dispatch({
         type: 'initUser',
         payload: {
-          username: user.username,
-          id_room: +user.room_id
+          user: payload.user,
+          messageList: payload.messages
         }
       })
-
+      console.log(state)
       history.push('/room')
-
-      console.log(user.username, +user.room_id)
     })
   }, [])
 

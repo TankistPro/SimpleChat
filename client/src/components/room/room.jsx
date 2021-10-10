@@ -16,11 +16,11 @@ function Room () {
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
     React.useEffect(() => {
-        socket.on('new-message', (message) => {
-            console.log(message)
+        socket.on('new-message', (messages) => {
+            console.log(messages)
             dispatch({
                 type: 'newMessage',
-                payload: message
+                payload: messages
             })
             console.log(state)
         })
@@ -53,7 +53,7 @@ function Room () {
     return (
         <div>
             <header>
-                <h1>Room #{ state.currentUser.id_room }</h1>
+                <h1>Room #{ state.currentUser.room_id }</h1>
                 <div className="right-bar">
                     <Button
                         variant="contained"
@@ -70,10 +70,11 @@ function Room () {
                         {state.messageData.map((message, index) => (
                             <div key={index} className={
                                 `message-item ${state.currentUser.username ===
-                                    message.from.username ?
+                                    message.from ?
                                     'your-message' : ''}`
                                 }
                             >
+                                <h6>{ message.from === state.currentUser.username ? 'Вы' : message.from }:</h6>
                                 <p>{ message.text }</p>
                                 <small>{ new Date(message.date).toLocaleString() }</small>
                             </div>

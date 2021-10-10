@@ -17,8 +17,8 @@ module.exports.initSocket = (app) => {
       room.connectUserToRoom(id_room, username);
     });
 
-    socket.on('disconnected', ({id_room, username}) => {
-      room.leaveRoom(id_room, username);
+    socket.on('disconnected', (user) => {
+      room.leaveRoom(user);
     });
 
     socket.on('send-message', payload => {

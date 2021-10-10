@@ -9,7 +9,7 @@ export function reducer(state, action) {
         case 'initRoomUsers':
             return { ...state, userList: state.userList = action.payload };
         case 'initUser':
-            return { ...state, currentUser: state.currentUser = action.payload };
+            return { ...state, currentUser: state.currentUser = action.payload.user, messageData: state.messageData = action.payload.messageList };
         case 'removeUser':
             let users = [];
             state.userList.forEach((user, index) => {
@@ -22,12 +22,12 @@ export function reducer(state, action) {
         case 'exit':
             return {
                 userList: [],
-                currentUser: null
+                currentUser: null,
+                messageData: []
             }
         case 'newMessage': {
-            state.messageData.push(action.payload)
             return {
-                ...state, messageData: state.messageData
+                ...state, messageData: state.messageData = action.payload
             };
         }
         default:
