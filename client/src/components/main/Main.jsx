@@ -61,7 +61,7 @@ function Main() {
   return (
     <div className="main">
       <div className="main-block">
-        <h1>ClientCHAT</h1>
+        <h1>ВХОД</h1>
         <TextField
           className="main-block__input"
           value={ username }

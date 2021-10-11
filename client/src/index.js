@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
+
+import { initialState } from './reducer/reducer'
 
 import './scss/_reset.scss';
 
@@ -9,10 +11,16 @@ import App from './components/main/Main.jsx';
 import Room from './components/room/room.jsx';
 
 ReactDOM.render(
-  <BrowserRouter> 
+  <BrowserRouter>
     <Switch>
       <Route exact path='/' component={App} />
-      <Route exact path='/room' component={Room} />
+      <Route exact render={ props => (
+          initialState.currentUser ? <Room /> : <Redirect to={{
+              pathname: '/',
+              state: { from: props.location }
+          }} />
+        )
+      }/>
     </Switch>
   </BrowserRouter>,
   document.getElementById('root')
