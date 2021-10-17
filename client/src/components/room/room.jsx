@@ -55,12 +55,9 @@ function Room () {
             <header>
                 <h1>Room #{ state.currentUser.room_id }</h1>
                 <div className="right-bar">
-                    <Button
-                        variant="contained"
-                        onClick={exit}
-                    >
-                        Отключиться
-                    </Button>
+                    <div className="exit" onClick={exit}>
+                        <p>Отключиться</p>
+                    </div>
                 </div>
             </header>
             <main>
@@ -74,28 +71,31 @@ function Room () {
                                     'your-message' : ''}`
                                 }
                             >
-                                <h6>{ message.from === state.currentUser.username ? 'Вы' : message.from }:</h6>
-                                <p>{ message.text }</p>
-                                <small>{ new Date(message.date).toLocaleString() }</small>
+                                {/*<h6>{ message.from === state.currentUser.username ? 'Вы' : message.from }:</h6>*/}
+                                <div className="avatar">
+                                    { message.from === state.currentUser.username ? 'Вы' : message.from.slice(0, 2) }
+                                </div>
+                                <div className="message-item__data">
+                                    <p>{ message.text }</p>
+                                    <small>{ new Date(message.date).toLocaleString() }</small>
+                                </div>
                             </div>
                         ))}
                     </div>
                     <div className="bottom">
-                        <TextField
+                        <textarea
                             value={message}
                             onChange={e => setMessage(e.target.value)}
                             onKeyDown={ sendHandler }
-                            className="input-chat"
-                            id="filled-basic"
-                            label="Введите сообщение..."
-                            variant="filled"
-                        />
-                        <Button
-                            variant="contained"
-                            onClick={sendMessage}
-                        >
-                            Отправить
-                        </Button>
+                            rows="4"
+                            cols="5"
+                            placeholder="Введите сообщение...">
+                        </textarea>
+                        <div className="send-btn" onClick={sendMessage}>
+                            <svg width="23" height="18" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 18L21.5 9L0.5 0V7L15.5 9L0.5 11V18Z" fill="white"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </main>

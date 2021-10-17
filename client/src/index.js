@@ -5,6 +5,8 @@ import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom'
 
 import { initialState } from './reducer/reducer'
 
+import './scss/fonts/font.css';
+import './scss/style.scss';
 import './scss/_reset.scss';
 
 import App from './components/main/Main.jsx';
