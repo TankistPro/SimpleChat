@@ -71,9 +71,8 @@ function Room () {
                                     'your-message' : ''}`
                                 }
                             >
-                                {/*<h6>{ message.from === state.currentUser.username ? 'Вы' : message.from }:</h6>*/}
                                 <div className="avatar">
-                                    { message.from === state.currentUser.username ? 'Вы' : message.from.slice(0, 2) }
+                                    <img src={message.avatarUrl} alt=""/>
                                 </div>
                                 <div className="message-item__data">
                                     <p>{ message.text }</p>

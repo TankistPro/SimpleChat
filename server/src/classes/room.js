@@ -34,7 +34,8 @@ class Room {
         const connectUserInitData = {
             user: {
                 room_id,
-                username
+                username,
+                avatarUrl: this._generateAvatarUrl(username)
             },
             messages
         }
@@ -55,7 +56,8 @@ class Room {
     sendMessage(payload) {
         rooms.get(this.room_id).get('messages').set(payload.date,
             new Map().set('text', payload.text).set('date', payload.date)
-                .set('from', payload.from.username).set('room_id', this.room_id));
+                .set('from', payload.from.username).set('room_id', this.room_id)
+                    .set('avatarUrl', payload.from.avatarUrl));
 
         const messages = this._parsingMessages(this.room_id);
 
@@ -84,6 +86,10 @@ class Room {
         });
 
         return messages;
+    }
+
+    _generateAvatarUrl(username) {
+        return `https://avatars.dicebear.com/api/avataaars/${username}.svg`
     }
 }
 
