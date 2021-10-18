@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Button, TextField } from '@material-ui/core';
 import { socket } from '../../sockets/socket';
 
 import AsideMenu from '../asideMenu/asideMenu.jsx';

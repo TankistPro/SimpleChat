@@ -13,7 +13,7 @@ export function reducer(state, action) {
         case 'removeUser':
             let users = [];
             state.userList.forEach((user, index) => {
-                if(user === action.username) {
+                if(user.username === action.username) {
                     console.log('пользователь найден')
                     state.userList.splice(index, 1)
                 }

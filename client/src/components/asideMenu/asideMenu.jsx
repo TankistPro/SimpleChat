@@ -32,8 +32,11 @@ const AsideMenu = () => {
             <ul>
             {state.userList.map((user, index) =>
                 <li key={index} className={state.currentUser.username ===
-                user ? 'my-account' : ''}>
-                 {index + 1}. {user}
+                user.username ? 'my-account' : ''}>
+                    <div className="aside-avatar">
+                        <img src={user.avatarUrl} alt=""/>
+                    </div>
+                    {user.username}
                 </li>
             )}
             </ul>

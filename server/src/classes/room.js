@@ -13,8 +13,11 @@ class Room {
 
         this.socket.join(this.room_id);
 
+        const avatarUrl = this._generateAvatarUrl(username);
+
         if(!rooms.has(this.room_id)) {
-            rooms.set(this.room_id, new Map().set('users', new Map().set(this.socket.id, username)).set('messages', new Map()));
+            rooms.set(this.room_id, new Map().set('users', new Map().set(this.socket.id, new Map().set('username', username)
+                .set('avatarUrl', avatarUrl))).set('messages', new Map()));
         } else {
             if(this._existUserInRoom(this.room_id, username)) {
                 this.io.to(this.socket.id).emit('exist-user');
@@ -22,26 +25,22 @@ class Room {
                 return;
             }
 
-            rooms.get(this.room_id).get('users').set(this.socket.id, username)
+            rooms.get(this.room_id).get('users').set(this.socket.id, new Map().set('username', username).set('avatarUrl', avatarUrl))
         }
 
-        console.log(rooms);
-
-        const users = [...rooms.get(this.room_id).get('users').values()];
-
-        const messages = this._parsingMessages(this.room_id);
+        const messages = this._parsingMessages();
+        const users = this._parsingUsers();
 
         const connectUserInitData = {
             user: {
                 room_id,
                 username,
-                avatarUrl: this._generateAvatarUrl(username)
+                avatarUrl
             },
             messages
         }
 
         this.io.to(this.socket.id).emit('successful-connect', connectUserInitData);
-
         this.io.to(this.room_id).emit('connected-user', users);
     }
 
@@ -74,6 +73,18 @@ class Room {
         }
 
         return false;
+    }
+
+    _parsingUsers() {
+        const usersMap = [...rooms.get(this.room_id).get('users').values()];
+
+        const users = []
+
+        usersMap.forEach(user => {
+            users.push(Object.fromEntries(user));
+        });
+
+        return users;
     }
 
     _parsingMessages(){
