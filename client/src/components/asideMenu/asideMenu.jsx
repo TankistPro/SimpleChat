@@ -10,14 +10,18 @@ const AsideMenu = () => {
     const [state, dispatch] = React.useReducer(reducer, initialState);
 
     React.useEffect(() => {
-        socket.on('connected-user', (users) => {
+        socket.on('connected-users', (users) => {
+            console.log(users)
             dispatch({
                 type: 'initRoomUsers',
                 payload: users
             })
         })
+        console.log(state.userList)
+    }, [state.userList])
 
-        socket.on('disconnected-user', (username) => {
+    React.useEffect(() => {
+        socket.once('disconnected-user', (username) => {
             console.log('Пользователь вышел из чата', username)
             dispatch({
                 type: 'removeUser',

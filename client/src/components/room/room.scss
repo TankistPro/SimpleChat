@@ -1,7 +1,8 @@
 header {
     width: 100%;
     box-sizing: border-box;
-    background-color: rgb(49, 56, 161);
+    //background-color: rgb(49, 56, 161);
+    background-color: rgb(3, 79, 79);
     height: 90px;
     display: flex;
     align-items: center;
@@ -20,7 +21,7 @@ header {
         .exit {
             text-transform: uppercase;
             color: #ffffff;
-            background-color: rgb(29, 35, 128);
+            background-color: rgb(83, 159, 159);
             font-size: 1.2rem;
             height: 40px;
             width: 200px;
@@ -46,7 +47,7 @@ main {
     height: calc(100vh - 90px);
 
     .wrapper-block {
-        width: calc(100% - 250px);
+        width: calc(100% - 350px);
         height: calc(100vh - 90px);
         margin-right: 0;
         margin-left: auto;
@@ -58,7 +59,8 @@ main {
             padding-left: 25px;
             height: calc(100vh - 235px);
             overflow-y: scroll;
-            background: url("../../../src/images/bg.svg") top center/cover no-repeat;
+            //background-color: #cbcbcb;
+            //background: url("../../../src/images/bg.svg") top center/100% no-repeat;
 
             &::-webkit-scrollbar-thumb, &::-webkit-scrollbar {
                 background-color: rgba(138, 138, 138, 0.8);
@@ -77,16 +79,20 @@ main {
                 align-items: center;
 
                 &__data {
-                    background-color: rgba(4, 32, 68, 0.75);
+                    background-color: rgba(53, 139, 189, 0.93);
                     max-width: 500px;
                     min-width: 150px;
-                    font-size: 22px;
+                    font-size: 23px;
+                    font-family: Gilroy-Medium, serif;
                     width: max-content;
                     padding: 10px 15px 20px 15px;
                     border-radius: 8px;
                     margin: 30px 0 30px 15px;
-                    color: #fff;
+                    color: #ffffff;
+                    //color: black;
                     position: relative;
+                    box-shadow: 0 0 15px -2px rgba(0, 0, 0 , 0.15);
+                    word-break: break-all;
 
                     small {
                         position: absolute;
@@ -122,8 +128,9 @@ main {
                     .message-item__data {
                         margin-right: 15px;
                         margin-left: auto;
-                        background-color: rgba(52, 115, 197, 0.87);
+                        background-color: rgba(255, 255, 255, 0.93);
                         order: 1;
+                        color: #000;
                     }
 
                     .avatar {

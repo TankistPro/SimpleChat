@@ -10,7 +10,7 @@ module.exports.initSocket = (app) => {
   const io = socket(server);
 
   io.on('connection', (socket) => {
-    console.log('Пользвоатель подключился');
+    console.log('Пользвоатель подключился', socket.id);
     const room = Room(io, socket);
 
     socket.on('connect-room', ({id_room, username}) => {

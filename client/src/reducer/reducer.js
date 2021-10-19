@@ -11,7 +11,6 @@ export function reducer(state, action) {
         case 'initUser':
             return { ...state, currentUser: state.currentUser = action.payload.user, messageData: state.messageData = action.payload.messageList };
         case 'removeUser':
-            let users = [];
             state.userList.forEach((user, index) => {
                 if(user.username === action.username) {
                     console.log('пользователь найден')

@@ -17,17 +17,48 @@ function Main() {
   const [isValidInputs, toggleValidInputs] = React.useState(false);
   const [isUserExist, toggleUserExist] = React.useState(false);
 
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const dispatch = React.useReducer(reducer, initialState)[1];
 
   React.useEffect(() => {
-    socket.on('connect', () => {
-      console.log("Соединение с сервером успешно установлено")
-    })
-  }, [])
+    if(localStorage.getItem('userName')) {
+      socket.on('reconnect', (data) => {
+        console.log(data)
+      })
+
+      socket.emit('connect-room', {
+        username: localStorage.getItem('userName'),
+        id_room: +localStorage.getItem('roomId')
+      })
+
+      socket.on('successful-connect', (payload) => {
+        toggleUserExist(false)
+        dispatch({
+          type: 'initUser',
+          payload: {
+            user: payload.user,
+            messageList: payload.messages
+          }
+        })
+        history.push('/room')
+      })
+    }else {
+      socket.once('connect', () => {
+        console.log("Соединение с сервером успешно установлено")
+      })
+
+      history.push('/')
+    }
+  }, [dispatch, history])
+
+  // React.useEffect(() => {
+  //   socket.once('connect', () => {
+  //     console.log("Соединение с сервером успешно установлено")
+  //   })
+  // })
 
   React.useEffect(() => {
-    socket.on('successful-connect', (payload) => {
-      toggleUserExist(false)
+    socket.once('successful-connect', (payload) => {
+      // toggleUserExist(false)
       dispatch({
         type: 'initUser',
         payload: {
@@ -35,10 +66,10 @@ function Main() {
           messageList: payload.messages
         }
       })
-      console.log(state)
+      // console.log(state)
       history.push('/room')
     })
-  }, [])
+  }, [dispatch, history])
 
   React.useEffect(() => {
     socket.on('exist-user', () => {
@@ -56,6 +87,9 @@ function Main() {
       username: username,
       id_room: +room_id
     })
+
+    localStorage.setItem('userName', username);
+    localStorage.setItem('roomId', room_id);
   }
 
   return (

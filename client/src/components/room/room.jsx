@@ -38,10 +38,16 @@ function Room () {
     }
 
     const exit = () => {
+        localStorage.removeItem('userName');
+        localStorage.removeItem('roomId');
+
+        console.log(state.currentUser)
+
         socket.emit('disconnected', state.currentUser);
         dispatch({
             type:'exit'
         });
+
         history.push('/');
     }
 
@@ -91,7 +97,7 @@ function Room () {
                         </textarea>
                         <div className="send-btn" onClick={sendMessage}>
                             <svg width="23" height="18" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M0.5 18L21.5 9L0.5 0V7L15.5 9L0.5 11V18Z" fill="white"/>
+                                <path fillRule="evenodd" clipRule="evenodd" d="M0.5 18L21.5 9L0.5 0V7L15.5 9L0.5 11V18Z" fill="white"/>
                             </svg>
                         </div>
                     </div>

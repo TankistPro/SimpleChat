@@ -1,5 +1,5 @@
 # SimpleChat 💬
-
+![img.png](client/src/images/img.png)
 ## Introduction🧐
 SimpleChat - is a corporate chat allowing people meet and chatting in one room.
 All you need is enter your **Name** (or Nickname) and **RoomId**.
