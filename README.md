@@ -9,6 +9,6 @@ This chat has the following stack technologies:
 - Node.js (framework Express.js),
 - Socket.io.
 
-This chat does not use DataBase, instead of this all information save in JavaScript *map object*.
+This chat does not use DataBase, instead of this all information saves in JavaScript *map object*.
 
 ❗ The app is still in development mode ❗
