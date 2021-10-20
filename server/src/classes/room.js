@@ -1,3 +1,4 @@
+const { v4 : uuidv4 } = require('uuid')
 const { rooms } = require("../localStarage/db");
 
 class Room {
@@ -12,32 +13,27 @@ class Room {
 
         this.socket.join(this.room_id);
 
+        const uuid = uuidv4();
         const avatarUrl = this._generateAvatarUrl(username);
 
         if(!rooms.has(this.room_id)) {
-            rooms.set(this.room_id, new Map().set('users', new Map().set(0, new Map().set('username', username)
-                .set('avatarUrl', avatarUrl))).set('messages', new Map()));
-            
-            this._getInitDataRoom(room_id, username, avatarUrl)
+            rooms.set(this.room_id, new Map().set('users', new Map().set(uuid, new Map().set('username', username)
+                .set('avatarUrl', avatarUrl).set('uuid', uuid))).set('messages', new Map()));
 
-            return;
+            this._getInitDataRoom(room_id, username, avatarUrl, uuid)
+        } else if(this._existUserInRoom(this.room_id, username)) {
+            const userUuid = this._getUserUuid(username);
+
+            this._getInitDataRoom(room_id, username, avatarUrl, userUuid)
+        } else {
+            rooms.get(this.room_id).get('users').set(uuid, new Map().set('username', username).set('avatarUrl', avatarUrl).set('uuid', uuid));
+
+            this._getInitDataRoom(room_id, username, avatarUrl, uuid)
         }
-
-        if(this._existUserInRoom(this.room_id, username)) {
-            this._getInitDataRoom(room_id, username, avatarUrl)
-
-            return;
-        }
-
-        let users = this._parsingUsers();
-
-        rooms.get(this.room_id).get('users').set(users.length, new Map().set('username', username).set('avatarUrl', avatarUrl));
-
-        this._getInitDataRoom(room_id, username, avatarUrl)
     }
 
     leaveRoom(user) {
-        rooms.get(this.room_id).get('users').delete(user.queueId);
+        rooms.get(this.room_id).get('users').delete(user.uuid);
 
         this.io.to(this.room_id).emit('disconnected-user', user.username);
 
@@ -55,14 +51,13 @@ class Room {
         this.io.to(this.room_id).emit('new-message', messages);
     }
 
-    _getInitDataRoom(room_id, username, avatarUrl) {
+    _getInitDataRoom(room_id, username, avatarUrl, uuid) {
         const users = this._parsingUsers();
         const messages = this._parsingMessages();
-        const index = this._searchUserInRoom();
 
         const connectUserInitData = {
             user: {
-                queueId: index,
+                uuid,
                 room_id,
                 username,
                 avatarUrl
@@ -88,7 +83,6 @@ class Room {
 
     _parsingUsers() {
         const usersMap = [...rooms.get(this.room_id).get('users').values()];
-
         const users = []
 
         usersMap.forEach(user => {
@@ -98,26 +92,22 @@ class Room {
         return users;
     }
 
-    _searchUserInRoom(username) {
+    _getUserUuid(username) {
         const usersMap = [...rooms.get(this.room_id).get('users').values()];
-        let indexID = 0;
-
-        if(usersMap.length === 1) return indexID
-
-
+        let uuid = null;
 
         usersMap.forEach((user, index) => {
             if (user.get('username') === username) {
-                indexID = index
+                console.log(user)
+                uuid = user.get('uuid')
             }
         });
 
-        return indexID
+        return uuid
     }
 
     _parsingMessages(){
         const messagesMap =  [...rooms.get(this.room_id).get('messages').values()];
-
         const messages = [];
 
         messagesMap.forEach(m => {

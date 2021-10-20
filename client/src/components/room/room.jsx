@@ -21,9 +21,14 @@ function Room () {
                 type: 'newMessage',
                 payload: messages
             })
-            console.log(state)
         })
     }, [])
+
+    React.useEffect(() => {
+        let element = document.querySelector('.wrapper-block__chat');
+        console.log(element.scrollTop)
+        element.scrollTop = element.scrollHeight;
+    }, [state.messageData])
 
     const sendMessage = () => {
         const messagePayload = {
@@ -69,22 +74,24 @@ function Room () {
                 <AsideMenu />
                 <div className="wrapper-block">
                     <div className="wrapper-block__chat">
-                        {state.messageData.map((message, index) => (
-                            <div key={index} className={
-                                `message-item ${state.currentUser.username ===
+                        <div className="messages-wrapper">
+                            {state.messageData.map((message, index) => (
+                                <div key={index} className={
+                                    `message-item ${state.currentUser.username ===
                                     message.from ?
-                                    'your-message' : ''}`
+                                        'your-message' : ''}`
                                 }
-                            >
-                                <div className="avatar">
-                                    <img src={message.avatarUrl} alt=""/>
+                                >
+                                    <div className="avatar">
+                                        <img src={message.avatarUrl} alt=""/>
+                                    </div>
+                                    <div className="message-item__data">
+                                        <p>{ message.text }</p>
+                                        <small>{ new Date(message.date).toLocaleString() }</small>
+                                    </div>
                                 </div>
-                                <div className="message-item__data">
-                                    <p>{ message.text }</p>
-                                    <small>{ new Date(message.date).toLocaleString() }</small>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                     <div className="bottom">
                         <textarea

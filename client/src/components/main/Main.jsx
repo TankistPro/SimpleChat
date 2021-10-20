@@ -21,10 +21,6 @@ function Main() {
 
   React.useEffect(() => {
     if(localStorage.getItem('userName')) {
-      socket.on('reconnect', (data) => {
-        console.log(data)
-      })
-
       socket.emit('connect-room', {
         username: localStorage.getItem('userName'),
         id_room: +localStorage.getItem('roomId')
@@ -49,12 +45,6 @@ function Main() {
       history.push('/')
     }
   }, [dispatch, history])
-
-  // React.useEffect(() => {
-  //   socket.once('connect', () => {
-  //     console.log("Соединение с сервером успешно установлено")
-  //   })
-  // })
 
   React.useEffect(() => {
     socket.once('successful-connect', (payload) => {
